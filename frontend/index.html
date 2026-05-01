@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verity — Fake News Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="noise"></div>
+
+  <header>
+    <div class="logo">
+      <span class="logo-mark">V</span>
+      <span class="logo-text">VERITY</span>
+    </div>
+    <p class="tagline">ML-powered misinformation detection</p>
+  </header>
+
+  <main>
+    <section class="input-section">
+      <label for="newsInput" class="input-label">Paste news article or headline</label>
+      <textarea
+        id="newsInput"
+        placeholder="Paste a news headline, paragraph, or full article here. The system will analyse linguistic patterns to assess credibility..."
+        spellcheck="false"
+      ></textarea>
+      <div class="input-meta">
+        <span id="charCount">0 characters</span>
+        <button id="analyseBtn" onclick="analyse()">
+          <span class="btn-text">Analyse</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </div>
+    </section>
+
+    <div id="errorBox" class="error-box hidden"></div>
+
+    <section id="resultSection" class="result-section hidden">
+      <div class="verdict-card" id="verdictCard">
+        <div class="verdict-left">
+          <div class="verdict-label">Verdict</div>
+          <div class="verdict-value" id="verdictValue">—</div>
+          <div class="verdict-sub" id="verdictSub">—</div>
+        </div>
+        <div class="verdict-right">
+          <div class="gauge-wrap">
+            <svg class="gauge" viewBox="0 0 120 70">
+              <path class="gauge-bg" d="M10 65 A55 55 0 0 1 110 65" stroke-width="8" fill="none"/>
+              <path class="gauge-fill" id="gaugeFill" d="M10 65 A55 55 0 0 1 110 65"
+                stroke-width="8" fill="none"
+                stroke-dasharray="173" stroke-dashoffset="173"/>
+              <text class="gauge-pct" id="gaugePct" x="60" y="60" text-anchor="middle">0%</text>
+            </svg>
+            <div class="gauge-labels">
+              <span>Fake</span><span>Real</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-pill">
+          <span class="stat-label">Fake probability</span>
+          <span class="stat-value" id="fakePct">—</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Real probability</span>
+          <span class="stat-value" id="realPct">—</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-label">Word count</span>
+          <span class="stat-value" id="wordCount">—</span>
+        </div>
+      </div>
+
+      <div class="highlights-section">
+        <div class="highlights-title">Key words that influenced this result</div>
+        <div class="highlights-legend">
+          <span class="dot dot-real"></span> pushes toward real
+          <span class="dot dot-fake"></span> pushes toward fake
+        </div>
+        <div id="highlightTags" class="highlight-tags"></div>
+      </div>
+
+      <div class="text-preview-section">
+        <div class="highlights-title">Annotated text</div>
+        <div id="annotatedText" class="annotated-text"></div>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Note:</strong> This model identifies linguistic patterns from training data. It does not
+        verify facts or access the internet. A high "real" score does not guarantee accuracy.
+      </div>
+    </section>
+
+    <section id="loadingSection" class="loading-section hidden">
+      <div class="loader-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <p>Analysing patterns...</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Fake News Detection System</span>
+    <span>MCA Project · Graphic Era University · 2026</span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
