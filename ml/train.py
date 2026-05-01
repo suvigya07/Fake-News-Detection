@@ -6,16 +6,41 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 import joblib
 import os
-import sys
+import glob
 
 from utils import clean_text
 
-DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'WELFake_Dataset.csv')
 MODEL_DIR = os.path.join(os.path.dirname(__file__), 'model')
+LOCAL_DATA = os.path.join(os.path.dirname(__file__), '..', 'data', 'WELFake_Dataset.csv')
+
+def get_dataset_path():
+    # 1. Use local file if already present
+    if os.path.exists(LOCAL_DATA):
+        print(f"  Found local dataset at {LOCAL_DATA}")
+        return LOCAL_DATA
+
+    # 2. Download via kagglehub
+    print("  Local dataset not found. Downloading from Kaggle...")
+    print("  (requires kaggle API token — see https://www.kaggle.com/settings > API)")
+    try:
+        import kagglehub
+        path = kagglehub.dataset_download("saurabhshahane/fake-news-classification")
+        print(f"  Downloaded to: {path}")
+        # kagglehub puts files inside the returned path directory
+        matches = glob.glob(os.path.join(path, "**", "WELFake_Dataset.csv"), recursive=True)
+        if not matches:
+            raise FileNotFoundError(f"WELFake_Dataset.csv not found inside {path}")
+        return matches[0]
+    except ImportError:
+        raise ImportError(
+            "kagglehub not installed. Run:  pip install kagglehub\n"
+            "Or manually place WELFake_Dataset.csv in the data/ folder."
+        )
 
 def load_data():
     print("Loading dataset...")
-    df = pd.read_csv(DATA_PATH)
+    csv_path = get_dataset_path()
+    df = pd.read_csv(csv_path)
     print(f"  Raw shape: {df.shape}")
 
     # WELFake columns: Unnamed:0, title, text, label  (0=fake, 1=real)
@@ -68,7 +93,6 @@ def train():
     print(f"\n{'='*50}")
     print(f"  Accuracy : {acc*100:.2f}%")
     print(f"\nClassification Report:\n{classification_report(y_test, y_pred, target_names=['Real','Fake'])}")
-    # print(f"\nClassification Report:\n{classification_report(y_test, y_pred, target_names=['Fake','Real'])}")
     print(f"\nConfusion Matrix:\n{confusion_matrix(y_test, y_pred)}")
     print(f"{'='*50}\n")
 

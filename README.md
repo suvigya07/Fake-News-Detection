@@ -28,17 +28,21 @@ fakenews/
 
 ## Setup (Windows)
 
-### 1. Download the dataset
-
-Go to: https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification
-
-Download `WELFake_Dataset.csv` and place it in the `data/` folder.
-
-### 2. Install Python dependencies
+### 1. Install Python dependencies
 
 ```bash
-pip install pandas scikit-learn nltk joblib
+pip install pandas scikit-learn nltk joblib kagglehub
 ```
+
+### 2. Set up Kaggle API token (one time only)
+
+- Go to https://www.kaggle.com/settings → API → Create New Token
+- It downloads `kaggle.json`
+- Place it at `C:\Users\<you>\.kaggle\kaggle.json` on Windows
+
+The dataset downloads automatically when you run `train.py` — no manual download needed.
+
+> Already have the CSV? Place it at `data/WELFake_Dataset.csv` and the script uses it directly.
 
 ### 3. Train the model (run once)
 
