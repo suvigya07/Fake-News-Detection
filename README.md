@@ -1,5 +1,4 @@
 # Fake News / Misinformation Detection System
-MCA Project — Graphic Era University, 2026
 
 ## Project Structure
 
